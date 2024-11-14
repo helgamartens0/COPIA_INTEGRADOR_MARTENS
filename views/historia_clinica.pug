@@ -202,7 +202,7 @@ ul.evolucion
   else 
     li Aun no hay otras atenciones cargadas para #{paciente.nombre_paciente}
 
-form(action="#" method="post" onsubmit="cerrarConsulta(event)")
+form(action="#" method="post" onsubmit="cerrarConsulta(event)") 
   input(type="hidden" name="id_agenda_horarios" value=paciente.id_agenda_horarios)
   input(type="hidden" name="id_medico" value=paciente.id_medico)
   button.btn-volver(type="submit") Cerrar Consulta

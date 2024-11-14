@@ -364,6 +364,7 @@ router.get('/obtener_template/:id', (req, res) => {
         }
     });
 });
+
 router.get('/verificar_cierre_consulta/:id_agenda_horarios', async(req, res) => {
     const { id_agenda_horarios } = req.params;
     const paciente = req.session.paciente;
@@ -372,32 +373,48 @@ router.get('/verificar_cierre_consulta/:id_agenda_horarios', async(req, res) => 
         const sqlDiagnostico = "SELECT COUNT(*) AS total FROM diagnostico WHERE id_agenda_horarios = ? AND id_estado = 1";
         const sqlEvolucion = "SELECT COUNT(*) AS total FROM evolucion WHERE id_turno = ? AND id_estado = 1";
         const sqlCambioEstadoAgenda = "UPDATE agenda_horarios SET id_estado = 1 WHERE id_agenda_horarios = ?";
-        const agregarConsulta = "INSERT INTO consultas (id_paciente,id_agenda_horarios,id_diagnostico,id_medico) VALUES (?,?,?,?); ";
+        const id_diagnostico = "SELECT id_diagnostico FROM diagnostico WHERE id_agenda_horarios = ? AND id_estado = 1 LIMIT 1";
+        const agregarConsulta = "INSERT INTO consultas (id_paciente, id_agenda_horarios, id_diagnostico, id_medico) VALUES (?, ?, ?, ?)";
+
         conexion.query(sqlDiagnostico, [id_agenda_horarios], (err, resultDiagnostico) => {
             if (err) throw err;
+
             conexion.query(sqlEvolucion, [id_agenda_horarios], (err, resultEvolucion) => {
                 if (err) throw err;
-                conexion.query(sqlCambioEstadoAgenda, [id_agenda_horarios], (err, resultCambioEstadoAgenda) => {
-                    if (err) throw err;
-                    const tieneDiagnostico = resultDiagnostico[0].total > 0;
-                    const tieneEvolucion = resultEvolucion[0].total > 0;
-                    console.log("tiene diagnostico: " + tieneDiagnostico);
-                    console.log("tiene evolucion: " + tieneEvolucion);
-                    if (tieneDiagnostico && tieneEvolucion) {
-                        conexion.query(agregarConsulta, [paciente.id_paciente, id_agenda_horarios, id_diagnostico, paciente.id_medico], async(err, result) => {
-                            if (err) {
-                                console.log("error al cargar la consulta" + err);
-                                return res.status(500).send('Hubo un problema al guardar la evolucion.' + err);
 
-                            }
+                const tieneDiagnostico = resultDiagnostico[0].total > 0;
+                const tieneEvolucion = resultEvolucion[0].total > 0;
+                console.log("tiene diagnostico: " + tieneDiagnostico);
+                console.log("tiene evolucion: " + tieneEvolucion);
 
-                            res.json({ puedeCerrar: true });
+                if (tieneDiagnostico && tieneEvolucion) {
+                    // Obtén el id_diagnostico antes de insertar en consultas
+                    conexion.query(id_diagnostico, [id_agenda_horarios], (err, resultDiagnosticoId) => {
+                        if (err) throw err;
+
+                        const id_diagnostico = resultDiagnosticoId[0] ? resultDiagnosticoId[0].id_diagnostico : null;
+
+                        if (!id_diagnostico) {
+                            return res.status(500).send("No se encontró el id_diagnostico.");
+                        }
+
+                        // Cambia el estado de la agenda y agrega la consulta
+                        conexion.query(sqlCambioEstadoAgenda, [id_agenda_horarios], (err) => {
+                            if (err) throw err;
+
+                            conexion.query(agregarConsulta, [paciente.id_paciente, id_agenda_horarios, id_diagnostico, paciente.id_medico], (err) => {
+                                if (err) {
+                                    console.log("Error al cargar la consulta: " + err);
+                                    return res.status(500).send('Hubo un problema al guardar la consulta: ' + err);
+                                }
+
+                                res.json({ puedeCerrar: true });
+                            });
                         });
-                    } else {
-                        res.json({ puedeCerrar: false });
-                    }
-
-                });
+                    });
+                } else {
+                    res.json({ puedeCerrar: false });
+                }
             });
         });
     } catch (error) {
