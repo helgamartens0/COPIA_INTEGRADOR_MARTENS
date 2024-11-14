@@ -1,9 +1,9 @@
+require('dotenv').config(); // Carga las variables de entorno del archivo .env
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 3000;
 const conexion = require('./config/conexion');
 const session = require('express-session'); //modulo de sesiones
-require('dotenv').config(); // Carga las variables de entorno del archivo .env
 app.set("view engine", "pug");
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
