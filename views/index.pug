@@ -1,0 +1,18 @@
+doctype html
+html
+  head
+    meta(charset='UTF-8')
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    link(rel='stylesheet' href='/styles.css')
+    title Inicio de sesión
+  body
+    form#formInicioSesion(action='/login' method='post')
+      label(for='usuario') Usuario:
+      input#usuario(type='number' name='usuario' required='') 
+      br
+      label(for='contra') Contraseña:
+      input#pass(type='password' name='pass' required='')
+      br
+      input(type="submit" value="ingresar")
+      br
+      //a.button(href='/listar') Listar Médicos

@@ -1,0 +1,35 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  link(rel='stylesheet' href='/estilos_agenda.css')
+  title INICIO - AGENDA
+.titulo
+  h1 Bienvenido #{medico}
+
+.contenedor_turnos_mes
+      table(class="table table-striped") 
+        thead
+          tr
+            th Fecha
+            th Hora
+            th Paciente
+            th Estado
+            th Motivo
+            th Historia Clinica
+        tbody
+          if turnos && turnos.length > 0
+            each turno in turnos
+              tr(class=(turno.descripcion == "cancelado" ? "cancelado" : "no-cancelado"))
+                td= turno.fecha
+                td= turno.inicio
+                td= turno.nombre_paciente
+                td= turno.descripcion
+                td= turno.motivo_cita
+                td
+                  a(href=`/guardar_paciente/${turno.id_paciente}`, class="btn btn-info") Ver
+                  if turno.descripcion == "no atendido"
+                    a(href="/atender", class="btn btn-success") Atender
+          else
+            tr
+              td(colspan="6") No hay turnos disponibles.

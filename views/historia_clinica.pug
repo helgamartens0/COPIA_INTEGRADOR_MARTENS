@@ -1,0 +1,213 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  title Document
+  link(rel='stylesheet', href='/estilos_HC.css')
+  link(rel='stylesheet', href='/estilos_formulario_HC.css')
+  script(src="/script.js" defer)
+  link(rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.snow.css")
+  script(src="https://cdn.quilljs.com/1.3.6/quill.min.js")
+h1 bienvenido a la historia clinica del paciente con ID:#{paciente.id_paciente}
+h5 nombre: #{paciente.nombre_paciente} 
+h5 apellido: #{paciente.apellido_paciente}
+h5 edad: #{paciente.edad}
+h5 sexo de nacimiento: #{paciente.sexo_nacimiento_paciente}
+h5 tipo de sangre: #{paciente.tipo_sangre_paciente}
+h5 ID del turno: #{paciente.id_agenda_horarios}
+h5.alergias-title Alergias
+ul.alergias
+  if alergias.length > 0
+    each alergia in alergias
+      li
+        span.alergia-info TIPO DE ALERGIA: #{alergia.nombre_alergia}, IMPORTANCIA: #{alergia.importancia_alergia}, FECHA DE INICIO: #{alergia.fecha_desde}, FECHA DE FIN: #{alergia.fecha_hasta || null}, CARGADO EL: #{alergia.fecha_carga_alergia}
+        if !alergia.fecha_hasta
+          button(type="button" id="btn_editar_alergia", href="#", onclick=`habilitarEdicionAlergia(${alergia.id_alergia})`).btn-editar Editar
+  else
+    li No hay alergias registradas para #{paciente.nombre_paciente}
+
+.form_alergias 
+  form(id="formAlergia", action="/agregar_alergia" method="POST")
+    input(type="hidden" name="id_historia_clinica" value=paciente.id_paciente)
+    input(type="hidden" name="id_medico" value=paciente.id_medico)
+    input(type="hidden" name="id_alergia" id="id_alergia")
+    
+    
+    // Campos de agregar alergia
+    label(for="nombre_alergia") Nombre: 
+    select#nombre_alergia(name="id_alergia")
+      option(value="") Seleccione alergia
+      each alergia in alergiasSelect
+        option(value=alergia.id_alergia)= alergia.nombre_alergia
+    br
+    label(for="importancia_alergia") Importancia
+    select(name="importancia_alergia" id="importancia_alergia" required)
+      option(value="") Seleccione la importancia
+      option(value="Baja") Baja
+      option(value="Moderada") Moderada
+      option(value="Alta") Alta
+    br
+    label(for="fecha_desde_alergia") Fecha de Inicio
+    input(type="date" name="fecha_desde_alergia" id="fecha_desde_alergia" required)
+    br
+    label(for="fecha_hasta_alergia") Fecha de Fin
+    input(type="date" name="fecha_hasta_alergia" id="fecha_hasta_alergia")
+    br
+
+    // Botón de guardar y actualizar
+    button(type="submit" id="guardar_alergia") Guardar Alergia
+    button(type="submit" id="actualizar_alergia" disabled) Actualizar Alergia
+
+h5.antecedentes-title Antecedentes
+ul.antecedentes 
+  if antecedentes.length > 0
+    each antecedente in antecedentes
+      li
+        span.antecedente-info DESCRIPCION: #{antecedente.descripcion_antecedente}, FECHA DE INICIO:  #{antecedente.fecha_desde_antecedente}, FECHA DE FIN: #{antecedente.fecha_hasta_antecedente}, CARGADO EL: #{antecedente.fecha_carga_antecedente}
+        if !antecedente.fecha_hasta_antecedente
+          button(type="button" id="btn_editar_antecedente", onclick=`habilitarEdicionAntecedente(${antecedente.id_antecedente})`).btn-editar Editar
+
+  else
+    li No hay antecedentes patológicos para #{paciente.nombre_paciente}
+
+.form_antecedentes
+  form(id="formAntecedente" action="/agregar_antecedente" method="POST")
+    input(type="hidden" name="id_historia_clinica" value=paciente.id_paciente)
+    input(type="hidden" id="id_medico" name="id_medico" value=paciente.id_medico)
+    input(type="hidden" id="id_antecedente" name="id_antecedente" value="")
+    label(for="descripcion_antecedente") Descripcion antecedente: 
+    input(id="descripcion_antecedente" type="text" name="descripcion_antecedente" required)
+    br
+    label(for="fecha_desde_antecedente") Fecha de Inicio
+    input(id="fecha_desde_antecedente" type="date" name="fecha_desde_antecedente"  required)
+    br
+    label(for="fecha_hasta_antecedente") Fecha de Fin
+    input(id="fecha_hasta_antecedente" type="date" name="fecha_hasta_antecedente")
+    br
+    button(type="submit" id="guardar_antecedente") Guardar Antecedente
+    button(type="submit" id="actualizar_antecedente" disabled) Actualizar Antecedente
+
+
+
+h5.habitos-title Habitos 
+ul.habitos 
+  if habitos.length > 0
+    each habito in habitos 
+      li
+        span.habito-info ID: #{habito.id_habito}, DESCRIPCION: #{habito.descripcion}, FECHA DE INICIO: #{habito.fecha_desde_habito}, FECHA DE FIN: #{habito.fecha_hasta_habito}, CARGADO EL: #{habito.fecha_carga_habito}
+        if !habito.fecha_hasta_habito 
+          button(type="button", onclick=`habilitarEdicionHabito(${habito.id_habito})`).btn-editar Editar el habito con id: #{habito.id_habito}
+  else 
+    li No hay habitos para #{paciente.nombre_paciente}
+.form_habitos 
+  form(id="formHabito" action="/agregar_habito" method="POST")
+    input(type="hidden" id="id_medico" name="id_medico" value=paciente.id_medico)
+    input(type="hidden" name="id_historia_clinica" value=paciente.id_paciente)
+    input(type="hidden" id="id_habito" name="id_habito" value="")
+
+
+    label(for="descripcion") Descripcion:
+    input#habito(type="text", name="descripcion" required)
+    br
+    label(for="fecha_desde_habito") Fecha de Inicio
+    input(type="date" name="fecha_desde_habito" id="fecha_desde_habito" required)
+    br
+    label(for="fecha_hasta_habito") Fecha de Fin
+    input(type="date" name="fecha_hasta_habito" id="fecha_hasta_habito")
+    br
+    button(type="submit" id="guardar_habito") Guardar Habito
+    button(type="submit" id="actualizar_habito" disabled) Actualizar Habito
+
+
+h5.medicamentos-title Medicamentos 
+ul.medicamentos 
+  if medicamentos.length > 0
+    each medicamento in medicamentos 
+      li 
+        span.medicamento-info DESCRIPCION: #{medicamento.descripcion},CARGADO EL: #{medicamento.fecha_carga_medicamento}
+  else 
+    li No hay medicamentos para #{paciente.nombre_paciente}
+.form_medicamentos 
+  form(action="/agregar_medicamento" method="POST")
+    input(type="hidden" name="id_historia_clinica" value=paciente.id_paciente)
+    input(type="hidden" id="id_medico" name="id_medico" value=paciente.id_medico)
+    label(for="descripcion") Descripcion:
+    input#habito(type="text", name="descripcion" required)
+    br
+    button(type="submit") Guardar Medicamento
+
+h5.evolucion-title Evoluciones
+ul.evolucion 
+ if evoluciones.length > 0
+  each evolucion in evoluciones
+    li
+      span.evoluciones-info 
+        | DESCRIPCION:  
+        != evolucion.descripcion_evolucion
+        | , FECHA DE CARGA: #{evolucion.fecha}
+  else
+    li Aun no hay evoluciones cargadas para #{paciente.nombre_paciente}
+
+.form_evoluciones
+  form( id="form_evoluciones" action="/agregar_evolucion" method="post" onsubmit="submitForm(event)")
+    input(type="hidden" name="id_historia_clinica" value=paciente.id_paciente)
+    input(type="hidden" name="id_agenda_horarios" value=paciente.id_agenda_horarios)
+
+    label(for="id_template") Selecciona un Template:
+    select(name="id_template" id="id_template")
+      option(value="") -- Selecciona un Template --
+      each template in templates
+        option(value=template.id_template)!= template.nombre_template
+
+    label(for="descripcion_evolucion") Agregar evolución:
+    #editor-container 
+    input(type="hidden" name="descripcion_evolucion" id="descripcion_evolucion")
+    button(type="submit") Guardar Evolución
+    //CAMBIAR ESTO A DIAGNOSTICO-TITLE ETC
+
+h5.evolucion-title DIAGNOSTICO
+ul.evolucion 
+  if diagnosticos.length > 0
+    each diagnostico in diagnosticos 
+      li 
+        h4
+          u fecha:
+          |  #{diagnostico.fecha}
+        h4
+          u motivo de la consulta:
+          |  #{diagnostico.motivo_cita}
+        h4
+          u diagnostico:
+          |  #{diagnostico.descripcion_diagnostico}
+
+  else 
+    li Aun no hay diagnosticos cargados para #{paciente.nombre_paciente}
+.form_evoluciones
+  form(action="/agregar_diagnostico" method="post")
+    input(type="hidden" name="id_agenda_horarios" value=paciente.id_agenda_horarios)
+
+    label(for="descripcion_diagnostico") Agregar Diagnostico de la consulta:
+    input(type="text" name="descripcion_diagnostico" id="descripcion_diagnostico")
+    button(type="submit") Guardar Diagnostico
+
+
+
+    //CAMBIAR ESTO A ATENCIONES-TITLE ETC
+
+h5.evolucion-title Atenciones de otros medicos
+ul.evolucion 
+  if consultas.length > 0
+    each consulta in consultas 
+      li FECHA DE LA CONSULTA: #{consulta.fecha}, ID DEL PACIENTE -deprueba-: #{consulta.id_paciente}, MOTIVO DE LA CONSULTA: #{consulta.motivo_cita}, NOMBRE DEL MEDICO: #{consulta.nombre_medico}, DIAGNOSTICO: #{consulta.descripcion_diagnostico}
+  else 
+    li Aun no hay otras atenciones cargadas para #{paciente.nombre_paciente}
+
+form(action="#" method="post" onsubmit="cerrarConsulta(event)")
+  input(type="hidden" name="id_agenda_horarios" value=paciente.id_agenda_horarios)
+  input(type="hidden" name="id_medico" value=paciente.id_medico)
+  button.btn-volver(type="submit") Cerrar Consulta
+
+// Div para mostrar el mensaje de error
+div(id="mensajeCierre" style="display:none; color:red;") 
+  p(id="mensajeError")
+

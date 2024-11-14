@@ -1,0 +1,102 @@
+doctype html
+head
+  meta(charset='UTF-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1.0')
+  title Document
+  link(rel='stylesheet', href='/estilos_HC.css')
+h1 bienvenido a la historia clinica del paciente con ID:#{paciente.id_paciente}
+h5 nombre: #{paciente.nombre_paciente} 
+h5 apellido: #{paciente.apellido_paciente}
+h5 edad: #{paciente.edad}
+h5 sexo de nacimiento: #{paciente.sexo_nacimiento_paciente}
+h5 tipo de sangre: #{paciente.tipo_sangre_paciente}
+h5.alergias-title Alergias
+ul.alergias
+  if alergias.length > 0
+    each alergia in alergias
+      li
+        span.alergia-info TIPO DE ALERGIA: #{alergia.nombre_alergia}, IMPORTANCIA: #{alergia.importancia_alergia}, FECHA DE INICIO: #{alergia.fecha_desde}, FECHA DE FIN: #{alergia.fecha_hasta || "alergia en curso"}, CARGADO EL: #{alergia.fecha_carga_alergia}
+       
+  else
+    li No hay alergias registradas para #{paciente.nombre_paciente}
+
+h5.antecedentes-title Antecedentes
+ul.antecedentes 
+  if antecedentes.length > 0
+    each antecedente in antecedentes
+      li
+        span.antecedente-info DESCRIPCION: #{antecedente.descripcion_antecedente}, FECHA DE INICIO:  #{antecedente.fecha_desde_antecedente}, FECHA DE FIN: #{antecedente.fecha_hasta_antecedente|| "antecedente en curso"}, CARGADO EL: #{antecedente.fecha_carga_antecedente}
+      
+  else
+    li No hay antecedentes patológicos para #{paciente.nombre_paciente}
+
+
+
+
+h5.habitos-title Habitos 
+ul.habitos 
+  if habitos.length > 0
+    each habito in habitos 
+      li
+        span.habito-info DESCRIPCION: #{habito.descripcion}, FECHA DE INICIO: #{habito.fecha_desde_habito}, FECHA DE FIN: #{habito.fecha_hasta_habito || "habito en curso"}, CARGADO EL: #{habito.fecha_carga_habito}
+  
+  else 
+    li No hay habitos para #{paciente.nombre_paciente}
+
+
+
+h5.medicamentos-title Medicamentos 
+ul.medicamentos 
+  if medicamentos.length > 0
+    each medicamento in medicamentos 
+      li 
+        span.medicamento-info DESCRIPCION: #{medicamento.descripcion},CARGADO EL: #{medicamento.fecha_carga_medicamento}
+  else 
+    li No hay medicamentos para #{paciente.nombre_paciente}
+
+h5.evolucion-title Evoluciones
+ul.evolucion 
+  if evoluciones.length > 0
+    each evolucion in evoluciones
+      li
+        span.evoluciones-info 
+          | DESCRIPCION: 
+          != evolucion.descripcion_evolucion
+          | , FECHA DE CARGA: #{evolucion.fecha}
+  else 
+    li Aun no hay evoluciones cargadas para #{paciente.nombre_paciente}
+
+h5.evolucion-title DIAGNOSTICO
+ul.evolucion 
+  if diagnosticos.length > 0
+    each diagnostico in diagnosticos 
+      li 
+        h4
+          u fecha:
+          |  #{diagnostico.fecha}
+        h4
+          u motivo de la consulta:
+          |  #{diagnostico.motivo_cita}
+        h4
+          u diagnostico:
+          |  #{diagnostico.descripcion_diagnostico}
+
+  else 
+    li Aun no hay diagnosticos cargados para #{paciente.nombre_paciente}
+ 
+
+
+    //CAMBIAR ESTO A ATENCIONES-TITLE ETC
+
+h5.evolucion-title Atenciones de otros medicos
+ul.evolucion 
+  if consultas.length > 0
+    each consulta in consultas 
+      li FECHA DE LA CONSULTA: #{consulta.fecha}, ID DEL PACIENTE -deprueba-: #{consulta.id_paciente}, MOTIVO DE LA CONSULTA: #{consulta.motivo_cita}, NOMBRE DEL MEDICO: #{consulta.nombre_medico}, DIAGNOSTICO: #{consulta.descripcion_diagnostico}
+  else 
+    li Aun no hay otras atenciones cargadas para #{paciente.nombre_paciente}
+
+.btn-volver-atras
+  a(href=`/agenda_mes?id_medico=${paciente.id_medico}`)
+    button.btn-volver Volver Atrás
+

@@ -1,0 +1,21 @@
+tr.cancelado {
+    color: red;
+    text-decoration: line-through;
+}
+
+tr.hoy {
+    background-color: #b2e0e0;
+    /* Turquesa claro */
+    border: 2px solid #009688;
+    /* Borde para destacar */
+    font-weight: bold;
+    /* Resaltar texto */
+}
+
+
+/* Separar filas del día de hoy de los demás */
+
+tr.hoy+tr {
+    border-top: 2px solid #009688;
+    /* Separador entre hoy y los siguientes */
+}

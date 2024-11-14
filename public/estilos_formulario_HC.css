@@ -1,0 +1,309 @@
+a.btn-editar {
+    padding: 5px 10px;
+    background-color: #a2d5f2;
+    color: #333;
+    border: none;
+    border-radius: 4px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+a.btn-editar:hover {
+    background-color: #85c1e9;
+}
+
+.form_alergias {
+    margin-bottom: 2em;
+    padding: 1em;
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    background-color: #f5faff;
+    width: 100%;
+    max-width: 600px;
+}
+
+.form_alergias label {
+    display: inline-block;
+    margin-top: 0.5em;
+    font-weight: bold;
+}
+
+.form_alergias input[type="text"],
+.form_alergias select,
+.form_alergias input[type="date"] {
+    width: 100%;
+    padding: 1px;
+    margin-top: 0.2em;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+.form_alergias button[type="submit"] {
+    background-color: #3a6ea5;
+    color: #fff;
+    padding: 0.5em 1em;
+    border: none;
+    border-radius: 4px;
+    font-size: 1em;
+    cursor: pointer;
+    margin-top: 1em;
+}
+
+.form_alergias button[type="submit"]:hover {
+    background-color: #2e5b8a;
+}
+
+
+/*antecedentes*/
+
+.form_antecedentes {
+    margin-bottom: 2em;
+    padding: 1em;
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    background-color: #f5faff;
+    width: 100%;
+    max-width: 600px;
+}
+
+.form_antecedentes label {
+    display: inline-block;
+    margin-top: 0.5em;
+    font-weight: bold;
+}
+
+.form_antecedentes input[type="text"],
+.form_antecedentes select,
+.form_antecedentes input[type="date"] {
+    width: 100%;
+    padding: 1px;
+    margin-top: 0.2em;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+.form_antecedentes button[type="submit"] {
+    background-color: #8B0000;
+    color: #fff;
+    padding: 0.5em 1em;
+    border: none;
+    border-radius: 4px;
+    font-size: 1em;
+    cursor: pointer;
+    margin-top: 1em;
+}
+
+.form_antecedentes button[type="submit"]:hover {
+    background-color: #8B0000;
+}
+
+
+/*habitos*/
+
+.form_habitos {
+    margin-bottom: 2em;
+    padding: 1em;
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    background-color: #f5faff;
+    width: 100%;
+    max-width: 600px;
+}
+
+.form_habitos label {
+    display: inline-block;
+    margin-top: 0.5em;
+    font-weight: bold;
+}
+
+.form_habitos input[type="text"],
+.form_habitos select,
+.form_habitos input[type="date"] {
+    width: 100%;
+    padding: 1px;
+    margin-top: 0.2em;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+.form_habitos button[type="submit"] {
+    background-color: #4CAF50;
+    ;
+    color: #fff;
+    padding: 0.5em 1em;
+    border: none;
+    border-radius: 4px;
+    font-size: 1em;
+    cursor: pointer;
+    margin-top: 1em;
+}
+
+.form_habitos button[type="submit"]:hover {
+    background-color: #4CAF50;
+    ;
+}
+
+
+/*medicamentos */
+
+.form_medicamentos {
+    margin-bottom: 2em;
+    padding: 1em;
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    background-color: #f5faff;
+    width: 100%;
+    max-width: 600px;
+}
+
+.form_medicamentos label {
+    display: inline-block;
+    margin-top: 0.5em;
+    font-weight: bold;
+}
+
+.form_medicamentos input[type="text"],
+.form_medicamentos select,
+.form_medicamentos input[type="date"] {
+    width: 100%;
+    padding: 1px;
+    margin-top: 0.2em;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+.form_medicamentos button[type="submit"] {
+    background-color: #9c27b0;
+    color: #fff;
+    padding: 0.5em 1em;
+    border: none;
+    border-radius: 4px;
+    font-size: 1em;
+    cursor: pointer;
+    margin-top: 1em;
+}
+
+.form_medicamentos button[type="submit"]:hover {
+    background-color: #9c27b0;
+}
+
+
+/*evoluciones */
+
+.form_evoluciones {
+    margin-bottom: 2em;
+    padding: 1em;
+    border: 1px solid #d9d9d9;
+    border-radius: 5px;
+    background-color: #f5faff;
+    width: 100%;
+    max-width: 600px;
+}
+
+.form_evoluciones label {
+    display: inline-block;
+    margin-top: 0.5em;
+    font-weight: bold;
+}
+
+.form_evoluciones input[type="text"],
+.form_evoluciones select,
+.form_evoluciones input[type="date"] {
+    width: 100%;
+    padding: 1px;
+    margin-top: 0.2em;
+    border: 1px solid #d9d9d9;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+.form_evoluciones button[type="submit"] {
+    background-color: #006D75;
+    color: #fff;
+    padding: 0.5em 1em;
+    border: none;
+    border-radius: 4px;
+    font-size: 1em;
+    cursor: pointer;
+    margin-top: 1em;
+}
+
+.form_evoluciones button[type="submit"]:hover {
+    background-color: #006D75;
+}
+
+
+/* Contenedor del botón, que se alinea a la derecha */
+
+.btn-volver-atras {
+    text-align: right;
+    margin-top: 20px;
+}
+
+
+/* Estilos del botón */
+
+.btn-volver {
+    background-color: #b3e5fc;
+    color: #031a5f;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    /* Sombra suave */
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+
+/* Efecto al pasar el mouse */
+
+.btn-volver:hover {
+    background-color: #81d4fa;
+    transform: scale(1.05);
+}
+
+
+/* Efecto al hacer clic */
+
+.btn-volver:active {
+    background-color: #4fc3f7;
+    transform: scale(0.98);
+}
+
+
+/*boton desactivado*/
+
+button:disabled {
+    background-color: #d3d3d3;
+    color: #666666;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+
+/* Responsivo */
+
+@media (max-width: 600px) {
+    h1 {
+        font-size: 1.5em;
+        padding: 10px;
+    }
+    .container {
+        width: 95%;
+        padding: 10px;
+    }
+    h5 {
+        font-size: 0.9em;
+    }
+    ul li {
+        font-size: 0.9em;
+    }
+}

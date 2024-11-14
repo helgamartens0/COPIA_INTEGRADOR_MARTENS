@@ -1,0 +1,51 @@
+body {
+    margin: 0;
+    height: 100vh;
+    /* Ocupar toda la altura de la pantalla */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.titulos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    /* Espacio entre el título y el selector */
+}
+
+.selecc_ag {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    /* Espacio entre el selector y la agenda */
+}
+
+.container {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+a.agenda_dia,
+a.agenda_mes {
+    border: 1px solid;
+    padding: 100px;
+    background-color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+a.agenda_dia:hover,
+a.agenda_mes:hover {
+    background-color: #f0f0f0;
+}
+
+a:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 0, 255, 0.5);
+}
