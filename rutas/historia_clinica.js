@@ -9,7 +9,7 @@ router.get('/historia_clinica', (req, res) => {
     }
     const paciente = req.session.paciente;
     const consultaSelectAlergia = `SELECT id_alergia,nombre_alergia FROM alergia`;
-    const consultaAlergia = `SELECT DISTINCT s_alergia.id_alergia, alergia.nombre_alergia, s_alergia.importancia_alergia, MIN(s_alergia.fecha_desde_alergia) AS fecha_desde, MAX(s_alergia.fecha_hasta_alergia) AS fecha_hasta, fecha_carga_alergia FROM s_alergia JOIN paciente ON s_alergia.id_historia_clinica = paciente.id_paciente JOIN alergia ON s_alergia.id_alergia = alergia.id_alergia WHERE paciente.id_paciente = 11 AND s_alergia.id_medico = 222 GROUP BY alergia.nombre_alergia ORDER BY fecha_carga_alergia ASC;`;
+    const consultaAlergia = `SELECT DISTINCT s_alergia.id_alergia, alergia.nombre_alergia, s_alergia.importancia_alergia, MIN(s_alergia.fecha_desde_alergia) AS fecha_desde, MAX(s_alergia.fecha_hasta_alergia) AS fecha_hasta, fecha_carga_alergia FROM s_alergia JOIN paciente ON s_alergia.id_historia_clinica = paciente.id_paciente JOIN alergia ON s_alergia.id_alergia = alergia.id_alergia WHERE paciente.id_paciente = ? AND s_alergia.id_medico = ? GROUP BY alergia.nombre_alergia ORDER BY fecha_carga_alergia ASC;`;
 
     const consultaAntecedente = ` SELECT s_antecedentes.id_antecedente,s_antecedentes.descripcion_antecedente, fecha_desde_antecedente, fecha_hasta_antecedente,fecha_carga_antecedente FROM s_antecedentes JOIN paciente ON s_antecedentes.id_historia_clinica = paciente.id_paciente WHERE s_antecedentes.id_historia_clinica = ? AND s_antecedentes.id_medico = ?; `;
 
