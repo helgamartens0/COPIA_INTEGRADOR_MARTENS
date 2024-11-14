@@ -29,5 +29,11 @@
     },
     "devDependencies": {
         "nodemon": "^3.1.7"
+    },
+    "config": {
+        "nodeVersion": "22.10.0",
+        "env": "production",
+        "JWT_SECRET": "unaClaveSecretaMuyFuerteYUnica",
+        "DATABASE_URL": "mysql://uasfantmhwbqy22h:iIrehnbxkaFOMF4OkYtu@bqyfnfvkn725migytxqx-mysql.services.clever-cloud.com:3306/bqyfnfvkn725migytxqx"
     }
 }
