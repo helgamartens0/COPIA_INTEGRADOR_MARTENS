@@ -230,7 +230,7 @@ router.post('/agregar_antecedente', async(req, res) => {
             conexion.query(insertar, [descripcion_antecedente, fecha_desde_antecedente, fecha_hasta_antecedente || null, id_historia_clinica, id_medico], (err, result) => {
                 if (err) {
                     console.log("error al insertar antecedente patologico" + err.message);
-                    return res.status(500).send('Hubo un problema al guardar el antecedente.');
+                    return res.status(500).send('Hubo un problema al guardar el antecedente.' + err);
                 }
                 res.redirect('/historia_clinica');
 
@@ -256,7 +256,7 @@ router.post('/agregar_habito', async(req, res) => {
             conexion.query(insertarS_Habito, [descripcion, fecha_desde_habito, fecha_hasta_habito || null, id_historia_clinica, id_medico], (err, result) => {
                 if (err) {
                     console.log("error al insertar habito" + err.message);
-                    return res.status(500).send('Hubo un problema al guardar el habito.');
+                    return res.status(500).send('Hubo un problema al guardar el habito.' + err);
                 }
                 res.redirect('/historia_clinica');
             });
@@ -281,7 +281,7 @@ router.post('/agregar_medicamento', async(req, res) => {
             conexion.query(insertar, [descripcion, id_historia_clinica, id_medico], (err, result) => {
                 if (err) {
                     console.log("error al insertar medicamento" + err.message);
-                    return res.status(500).send('Hubo un problema al guardar el medicamento.');
+                    return res.status(500).send('Hubo un problema al guardar el medicamento.' + err);
                 }
                 res.redirect('/historia_clinica');
             });
@@ -303,7 +303,7 @@ router.post('/agregar_diagnostico', async(req, res) => {
             conexion.query(insertar, [descripcion_diagnostico, id_agenda_horarios], (err, result) => {
                 if (err) {
                     console.log("error al insertar diagnostico" + err.message);
-                    return res.status(500).send('Hubo un problema al guardar el diagnostico.');
+                    return res.status(500).send('Hubo un problema al guardar el diagnostico.' + err);
                 }
                 res.redirect('/historia_clinica');
             });
@@ -331,7 +331,7 @@ router.post('/agregar_evolucion', async(req, res) => {
             conexion.query(insertar, [id_agenda_horarios, paciente.id_paciente, descripcion_evolucion], (err, result) => {
                 if (err) {
                     console.log("error al insertar la evolucion" + err.message);
-                    return res.status(500).send('Hubo un problema al guardar la evolucion.');
+                    return res.status(500).send('Hubo un problema al guardar la evolucion.' + err);
                 }
                 console.log("EVOLUCION CARGADA CON EXITO");
                 res.redirect('/historia_clinica');
