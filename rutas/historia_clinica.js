@@ -100,6 +100,7 @@ router.get('/historia_clinica', (req, res) => {
                                         console.log("error al obtener consulta de la BD" + errConsultas);
                                         return res.status(500).send("ERROR al obtener consultas de la BD");
                                     }
+                                    console.log("resultConsultas" + resultConsultas);
                                     //novena conexion: consulta templates
                                     conexion.query(consultaTemplates, [paciente.id_medico], (errTemplates, resultTemplates) => {
                                         if (errTemplates) {
