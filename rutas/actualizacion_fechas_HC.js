@@ -4,8 +4,7 @@ const conexion = require('../config/conexion');
 
 router.post('/actualizar_alergia', async(req, res) => {
     const { id_historia_clinica, id_alergia, fecha_hasta_alergia } = req.body;
-    // Verificar los valores recibidos
-    console.log("Datos recibidos:", req.body);
+    // console.log("Datos recibidos:", req.body);
     if (!fecha_hasta_alergia) {
         return res.status(200).send("Falta la fecha de la alergia");
     } else {

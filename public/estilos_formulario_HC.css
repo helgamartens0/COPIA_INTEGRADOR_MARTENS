@@ -258,28 +258,18 @@ a.btn-editar:hover {
     border-radius: 8px;
     cursor: pointer;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-    /* Sombra suave */
     transition: background-color 0.3s, transform 0.3s;
 }
-
-
-/* Efecto al pasar el mouse */
 
 .btn-volver:hover {
     background-color: #81d4fa;
     transform: scale(1.05);
 }
 
-
-/* Efecto al hacer clic */
-
 .btn-volver:active {
     background-color: #4fc3f7;
     transform: scale(0.98);
 }
-
-
-/*boton desactivado*/
 
 button:disabled {
     background-color: #d3d3d3;

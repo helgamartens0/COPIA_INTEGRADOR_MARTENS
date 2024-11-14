@@ -1,21 +1,18 @@
 function habilitarEdicionAlergia(idAlergia) {
-    // Mostrar el botón de "Actualizar Alergia" y deshabilitar el botón de "Guardar Alergia"
     const actualizarBtn = document.getElementById("actualizar_alergia");
     actualizarBtn.disabled = false;
 
     //  id de alergia en el campo oculto del formulario
     document.getElementById("id_alergia").value = idAlergia;
 
-    // Deshabilitar los campos que no deben ser editados
+    // Deshabilitar los campos
     document.getElementById("nombre_alergia").disabled = true;
     document.getElementById("importancia_alergia").disabled = true;
     document.getElementById("fecha_desde_alergia").disabled = true;
     document.getElementById("guardar_alergia").disabled = true;
 
-    // Habilitar solo el campo "Fecha de Fin"
     const fechaHastaAlergia = document.getElementById("fecha_hasta_alergia");
     fechaHastaAlergia.disabled = false;
-    // Opcional: Enfocar en el campo de "Fecha de Fin"
     fechaHastaAlergia.focus();
 
     console.log("Edición habilitada para alergia ID:", idAlergia);
@@ -61,11 +58,8 @@ function habilitarEdicionAntecedente(idAntecedente) {
     document.getElementById("fecha_desde_antecedente").disabled = true;
     document.getElementById("guardar_antecedente").disabled = true;
 
-    // Habilitar solo el campo "Fecha de Fin"
     const fechaHastaAntecedente = document.getElementById("fecha_hasta_antecedente");
     fechaHastaAntecedente.disabled = false;
-
-    // Opcional: Enfocar en el campo de "Fecha de Fin"
     fechaHastaAntecedente.focus();
 
     console.log("Edición habilitada para el antecedente con ID:", idAntecedente);
@@ -73,11 +67,9 @@ function habilitarEdicionAntecedente(idAntecedente) {
 
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('actualizar_antecedente').addEventListener('click', function() {
-        // Cambiar la acción del formulario a "/actualizar_antecedente"
         const form = document.getElementById('formAntecedente');
         form.action = '/actualizar_antecedente';
-        form.submit(); // Enviar el formulario
-
+        form.submit();
         console.log("Formulario enviado a /actualizar_antecedente");
     });
 });
@@ -99,7 +91,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const form = document.getElementById('formMedicamento');
         form.action = '/actualizar_medicamento';
-        form.submit(); // Enviar el formulario
+        form.submit();
     });
 });
 
@@ -115,11 +107,8 @@ function habilitarEdicionHabito(idHabito) {
     document.getElementById("fecha_desde_habito").disabled = true;
     document.getElementById("guardar_habito").disabled = true;
 
-    // Habilitar solo el campo "Fecha de Fin"
     const fechaHastaHabito = document.getElementById("fecha_hasta_habito");
     fechaHastaHabito.disabled = false;
-
-    // Opcional: Enfocar en el campo de "Fecha de Fin"
     fechaHastaHabito.focus();
 
     console.log("Edición habilitada para el habito con ID:", idHabito);
@@ -127,10 +116,9 @@ function habilitarEdicionHabito(idHabito) {
 
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('actualizar_habito').addEventListener('click', function() {
-        // Cambiar la acción del formulario a "/actualizar_antecedente"
         const form = document.getElementById('formHabito');
         form.action = '/actualizar_habito';
-        form.submit(); // Enviar el formulario
+        form.submit();
 
         console.log("Formulario enviado a /actualizar_habito");
     });
@@ -175,7 +163,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // Asegúrate de que este código se ejecute cuando el formulario se envíe
     const form = document.getElementById('form_evoluciones');
     if (form) {
         //console.log("if form anda ")
@@ -185,31 +172,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Obtener el contenido del editor de Quill y asignarlo al campo oculto
             const descripcion = editor.root.innerHTML;
-            console.log("Contenido de la evolución:", descripcion); // Verifica el valor
+            console.log("Contenido de la evolución:", descripcion); // Verificando el valor
 
             document.getElementById("descripcion_evolucion").value = descripcion;
 
-            // Ahora que el campo está actualizado, puedes enviar el formulario si es necesario
-            form.submit(); // Descomenta esta línea si quieres enviar el formulario después de actualizar el campo oculto
+            form.submit();
         });
     }
 
 });
 
 
-//Cliente: La función cerrarConsulta() hace una solicitud a /verificar_cierre_consulta,
+//  La función cerrarConsulta() hace una solicitud a /verificar_cierre_consulta,
 //  pasando el ID de la consulta actual. Según el resultado, redirige o muestra una alerta.
 async function cerrarConsulta(event) {
-    event.preventDefault(); // Prevenir que se recargue la página al hacer submit
+    event.preventDefault();
 
     const idAgendaHorarios = document.querySelector("input[name='id_agenda_horarios']").value;
     const idDoctor = document.querySelector("input[name='id_medico']").value;
 
-    // Verificar si el div de mensajeCierre existe
+    // Verifico si el div de mensajeCierre existe
     const mensajeCierre = document.getElementById('mensajeCierre');
     const mensajeError = document.getElementById('mensajeError');
 
-    // Solo intentar modificar el mensaje si el div existe
+    // Solo intenyo modificar el mensaje si el div existe
     if (mensajeCierre && mensajeError) {
         try {
             const response = await fetch(`/verificar_cierre_consulta/${idAgendaHorarios}`);

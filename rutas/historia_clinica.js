@@ -85,7 +85,6 @@ router.get('/historia_clinica', (req, res) => {
                     let medicamentosAnteriores = [];
 
                     if (resultMedicamentos.length > 0) {
-                        // Consulta para medicamentos anteriores
                         const consultaMedicamentosAnteriores = `
                                     SELECT id_medicamento, descripcion, fecha_carga_medicamento
                                     FROM s_medicamento
@@ -96,7 +95,7 @@ router.get('/historia_clinica', (req, res) => {
                                         WHERE id_historia_clinica = ? AND id_medico = ?
                                     );
                                 `;
-
+                        // Consulta ""media"" para medicamentos anteriores
                         conexion.query(consultaMedicamentosAnteriores, [paciente.id_paciente, paciente.id_medico, paciente.id_paciente, paciente.id_medico], (errAnteriores, resultAnteriores) => {
                             if (errAnteriores) {
                                 console.log(errAnteriores);
@@ -175,7 +174,6 @@ router.get('/historia_clinica', (req, res) => {
                                                     consulta.fecha = formatFecha(consulta.fecha);
                                                 });
 
-                                                // Renderizar la vista con los datos
                                                 res.render('historia_clinica', {
                                                     paciente: paciente,
                                                     alergias: resultAlergias,
@@ -423,7 +421,7 @@ router.get('/verificar_cierre_consulta/:id_agenda_horarios', async(req, res) => 
                 console.log("tiene evolucion: " + tieneEvolucion);
 
                 if (tieneDiagnostico && tieneEvolucion) {
-                    // Obtén el id_diagnostico antes de insertar en consultas
+                    // id_diagnostico antes de insertar en consultas
                     conexion.query(id_diagnostico, [id_agenda_horarios], (err, resultDiagnosticoId) => {
                         if (err) throw err;
 
@@ -460,7 +458,7 @@ router.get('/verificar_cierre_consulta/:id_agenda_horarios', async(req, res) => 
 
 // Función para formatear la fecha a DD-MM-AAAA
 function formatFecha(fecha) {
-    if (!fecha) return null; // Si no hay fecha, retorna null
+    if (!fecha) return null;
 
     const date = new Date(fecha);
     const dia = date.getDate().toString().padStart(2, '0');

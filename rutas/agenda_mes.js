@@ -102,7 +102,6 @@ router.get('/guardar_paciente_atendido/:id_paciente/:id_agenda_horarios', (req, 
 
         console.log("Datos del paciente guardados en sesión:", req.session.paciente);
 
-        // Redirigir a la página de historia clínica
         res.redirect('/historia_clinica');
     });
 });
@@ -122,12 +121,12 @@ function formatFecha(fecha) {
 // Función para calcular la edad dada una fecha de nacimiento
 function calcularEdad(fechaNacimiento) {
     const hoy = new Date(); // Fecha actual
-    const nacimiento = new Date(fechaNacimiento); // Convertir la fecha de nacimiento en objeto Date
+    const nacimiento = new Date(fechaNacimiento); // esto es para la fecha de nacimiento en objeto Date
 
     let edad = hoy.getFullYear() - nacimiento.getFullYear();
     const mes = hoy.getMonth() - nacimiento.getMonth();
 
-    // Si aún no ha cumplido años este año, restamos 1
+    // Si aún no ha cumplido años este año, resto 1
     if (mes < 0 || (mes === 0 && hoy.getDate() < nacimiento.getDate())) {
         edad--;
     }

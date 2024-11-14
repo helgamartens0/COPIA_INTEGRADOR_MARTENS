@@ -42,12 +42,10 @@ h5.alergias-title {
 ul.alergias li {
     display: flex;
     background-color: #cce4f6;
-    /* Color más claro */
     margin: 5px 0;
     padding: 10px;
     border-radius: 8px;
     border-left: 6px solid #2a5d9e;
-    /* Bordes laterales de un azul oscuro */
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     font-size: 1em;
 }
@@ -57,7 +55,6 @@ ul.alergias li {
 
 h5.antecedentes-title {
     color: #8B0000;
-    /* Rojo más oscuro */
     font-weight: bold;
     font-size: 1.2em;
     margin-bottom: 10px;
@@ -65,12 +62,10 @@ h5.antecedentes-title {
 
 ul.antecedentes li {
     background-color: #f4cccc;
-    /* Rojo más claro */
     margin: 5px 0;
     padding: 10px;
     border-radius: 8px;
     border-left: 6px solid #8B0000;
-    /* Bordes laterales de un rojo oscuro */
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     font-size: 1em;
 }
@@ -80,7 +75,6 @@ ul.antecedentes li {
 
 h5.habitos-title {
     color: #4CAF50;
-    /* Verde */
     font-weight: bold;
     font-size: 1.2em;
     margin-bottom: 10px;
@@ -88,12 +82,10 @@ h5.habitos-title {
 
 ul.habitos li {
     background-color: #e8f5e9;
-    /* Verde más claro */
     margin: 5px 0;
     padding: 10px;
     border-radius: 8px;
     border-left: 6px solid #4CAF50;
-    /* Bordes laterales de un verde oscuro */
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     font-size: 1em;
 }
@@ -103,7 +95,6 @@ ul.habitos li {
 
 h5.evolucion-title {
     color: #006D75;
-    /* Verde */
     font-weight: bold;
     font-size: 1.2em;
     margin-bottom: 10px;
@@ -111,12 +102,10 @@ h5.evolucion-title {
 
 ul.evolucion li {
     background-color: #A0E7E5;
-    /* Verde más claro */
     margin: 5px 0;
     padding: 10px;
     border-radius: 8px;
     border-left: 6px solid #006D75;
-    /* Bordes laterales de un verde oscuro */
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     font-size: 1em;
 }
@@ -126,7 +115,6 @@ ul.evolucion li {
 
 h5.medicamentos-title {
     color: #9c27b0;
-    /* Morado oscuro */
     font-weight: bold;
     font-size: 1.2em;
     margin-bottom: 10px;
@@ -134,18 +122,13 @@ h5.medicamentos-title {
 
 ul.medicamentos li {
     background-color: #e1bee7;
-    /* Morado claro */
     margin: 5px 0;
     padding: 10px;
     border-radius: 8px;
     border-left: 6px solid #9c27b0;
-    /* Bordes laterales en morado oscuro */
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     font-size: 1em;
 }
-
-
-/* Tarjeta de información del paciente */
 
 .container {
     width: 80%;
@@ -173,9 +156,6 @@ h5 span {
     margin-top: 20px;
 }
 
-
-/* Estilos del botón */
-
 .btn-volver {
     background-color: #b3e5fc;
     color: #031a5f;
@@ -186,20 +166,13 @@ h5 span {
     border-radius: 8px;
     cursor: pointer;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-    /* Sombra suave */
     transition: background-color 0.3s, transform 0.3s;
 }
-
-
-/* Efecto al pasar el mouse */
 
 .btn-volver:hover {
     background-color: #81d4fa;
     transform: scale(1.05);
 }
-
-
-/* Efecto al hacer clic */
 
 .btn-volver:active {
     background-color: #4fc3f7;

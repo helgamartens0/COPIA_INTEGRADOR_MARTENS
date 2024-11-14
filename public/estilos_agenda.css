@@ -1,7 +1,6 @@
 body {
     margin: 0;
     height: 100vh;
-    /* Ocupar toda la altura de la pantalla */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -13,7 +12,6 @@ body {
     justify-content: center;
     align-items: center;
     margin-bottom: 20px;
-    /* Espacio entre el título y el selector */
 }
 
 .selecc_ag {
@@ -21,7 +19,6 @@ body {
     justify-content: center;
     align-items: center;
     margin-bottom: 20px;
-    /* Espacio entre el selector y la agenda */
 }
 
 .container {

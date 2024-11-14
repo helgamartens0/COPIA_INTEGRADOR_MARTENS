@@ -7,9 +7,9 @@ router.get('/mostrar_turno', (req, res) => {
     const medico = req.query.medico || req.session.medico;
     console.log("id del medico en la fecha seleccionada: " + id_medico);
     console.log("nombre del medico en la fecha seleccionada: " + medico);
-    const fechaSeleccionada = req.query.fechaSeleccionada; // Obtener la fecha seleccionada desde la solicitud
+    const fechaSeleccionada = req.query.fechaSeleccionada; // Obtener la fecha seleccionada
     console.log("fechaSeleccionada en el form: " + fechaSeleccionada);
-    console.log(fechaSeleccionada === obtenerFechaHoy()); //
+    console.log(fechaSeleccionada === obtenerFechaHoy());
     const consulta = `
     SELECT paciente.id_paciente, nombre_paciente, agenda_horarios_estados.id_estado, descripcion, fecha, inicio, motivo_cita, nombre_medico 
     FROM agenda_horarios 
@@ -26,10 +26,9 @@ router.get('/mostrar_turno', (req, res) => {
         } else {
             // Formatear la fecha de cada turno a DD-MM-AAAA
             turnos.forEach(turno => {
-                turno.fecha = formatFecha(turno.fecha); // Formatear la fecha
+                turno.fecha = formatFecha(turno.fecha);
             });
 
-            // Pasamos `fechaSeleccionada` y `turnosHoy` a la vista Pug
             res.render('agenda_mes', {
                 medico: req.session.medico,
                 id_medico: req.session.id_medico,

@@ -1,12 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const conexion = require('../config/conexion');
-// Ruta para ver la historia clínica
-// Ruta para ver la historia clínica
-
 router.get('/ver_historia_clinica', (req, res) => {
     if (!req.session.paciente) {
-        return res.send("No hay datos del paciente guardados."); // Mostrar mensaje si no hay datos
+        return res.send("No hay datos del paciente guardados.");
     }
     const paciente = req.session.paciente;
     const consultaAlergia = `SELECT DISTINCT s_alergia.id_alergia, alergia.nombre_alergia, s_alergia.importancia_alergia, MIN(s_alergia.fecha_desde_alergia) AS fecha_desde, MAX(s_alergia.fecha_hasta_alergia) AS fecha_hasta, fecha_carga_alergia FROM s_alergia JOIN paciente ON s_alergia.id_historia_clinica = paciente.id_paciente JOIN alergia ON s_alergia.id_alergia = alergia.id_alergia WHERE paciente.id_paciente = ? AND s_alergia.id_medico = ? GROUP BY alergia.nombre_alergia ORDER BY fecha_carga_alergia ASC;`;
@@ -96,14 +93,12 @@ router.get('/ver_historia_clinica', (req, res) => {
                                     return res.status(500).send("ERROR al obtener consultas de la BD");
                                 }
 
-                                // Formatear las fechas de las alergias
                                 resultAlergias.forEach(alergia => {
                                     alergia.fecha_desde = formatFecha(alergia.fecha_desde);
                                     alergia.fecha_hasta = formatFecha(alergia.fecha_hasta);
                                     alergia.fecha_carga_alergia = formatFecha(alergia.fecha_carga_alergia);
                                 });
 
-                                // Formatear las fechas de los antecedentes
                                 resultAntecedentes.forEach(antecedente => {
                                     antecedente.fecha_desde_antecedente = formatFecha(antecedente.fecha_desde_antecedente);
                                     antecedente.fecha_hasta_antecedente = formatFecha(antecedente.fecha_hasta_antecedente);
@@ -132,9 +127,8 @@ router.get('/ver_historia_clinica', (req, res) => {
                                     consulta.fecha = formatFecha(consulta.fecha);
                                 });
                                 // console.log("resultSelectAlergia: " + JSON.stringify(resultSelectAlergia, null, 2));
-                                // Renderizar la vista con los datos
                                 res.render('ver_historia_clinica', {
-                                    paciente: paciente, // Pasar los datos del paciente a la vista
+                                    paciente: paciente,
                                     alergias: resultAlergias,
                                     antecedentes: resultAntecedentes,
                                     habitos: resultHabitos,
@@ -154,7 +148,7 @@ router.get('/ver_historia_clinica', (req, res) => {
 });
 // Función para formatear la fecha a DD-MM-AAAA
 function formatFecha(fecha) {
-    if (!fecha) return null; // Si no hay fecha, retorna null
+    if (!fecha) return null;
 
     const date = new Date(fecha);
     const dia = date.getDate().toString().padStart(2, '0');
