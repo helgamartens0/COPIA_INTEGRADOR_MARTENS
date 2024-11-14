@@ -21,7 +21,12 @@ router.get('/historia_clinica', (req, res) => {
     const consultaMedicamentos = ` SELECT id_medicamento, descripcion,fecha_carga_medicamento    
         FROM s_medicamento 
         JOIN paciente ON s_medicamento.id_historia_clinica = paciente.id_paciente 
-        WHERE paciente.id_paciente  = ? AND s_medicamento.id_medico = ?  ;`;
+        WHERE paciente.id_paciente  = ? AND s_medicamento.id_medico = ?  
+        AND fecha_carga_medicamento = (
+            SELECT MAX(fecha_carga_medicamento)
+            FROM s_medicamento
+            WHERE id_historia_clinica = paciente.id_paciente
+            AND id_medico = s_medicamento.id_medico);`;
 
     const consultaEvoluciones = `
             SELECT descripcion_evolucion, agenda_horarios.fecha
@@ -61,114 +66,143 @@ router.get('/historia_clinica', (req, res) => {
                 console.log(errAntecedentes);
                 return res.status(500).send("Error al obtener datos de antecedentes.");
             }
-            //tercera consulta: habitos
+
+            // Tercera consulta: hábitos
             conexion.query(consultaHabitos, [paciente.id_paciente, paciente.id_medico], (errHabitos, resultHabitos) => {
                 if (errHabitos) {
                     console.log(errHabitos);
-                    return res.status(500).send("Error al obtener datos de habitos.");
+                    return res.status(500).send("Error al obtener datos de hábitos.");
                 }
-                //cuarta consulta: medicamentos
+
+                // Cuarta consulta: medicamentos
                 conexion.query(consultaMedicamentos, [paciente.id_paciente, paciente.id_medico], (errMedicamentos, resultMedicamentos) => {
                     if (errMedicamentos) {
                         console.log(errMedicamentos);
                         return res.status(500).send("Error al obtener datos de medicamentos.");
                     }
 
-                    //quinta consulta: evoluciones
-                    conexion.query(consultaEvoluciones, [paciente.id_paciente, paciente.id_medico], (errEvoluciones, resultEvoluciones) => {
-                        if (errEvoluciones) {
-                            console.log(errEvoluciones);
-                            return res.status(500).send("Error al obtener datos de evoluciones.");
-                        }
-                        //sexta consulta: diagnosticos
-                        conexion.query(consultaDiagnosticos, [paciente.id_paciente, paciente.id_medico], (errDiagnosticos, resultDiagnosticos) => {
-                            if (errDiagnosticos) {
-                                console.log(errDiagnosticos);
-                                return res.status(500).send("Error al obtener datos de los diagnosticos.");
+                    let medicamentosUltimaFecha = resultMedicamentos;
+                    let medicamentosAnteriores = [];
+
+                    if (resultMedicamentos.length > 0) {
+                        // Consulta para medicamentos anteriores
+                        const consultaMedicamentosAnteriores = `
+                                    SELECT id_medicamento, descripcion, fecha_carga_medicamento
+                                    FROM s_medicamento
+                                    WHERE id_historia_clinica = ? AND id_medico = ?
+                                    AND fecha_carga_medicamento < (
+                                        SELECT MAX(fecha_carga_medicamento)
+                                        FROM s_medicamento
+                                        WHERE id_historia_clinica = ? AND id_medico = ?
+                                    );
+                                `;
+
+                        conexion.query(consultaMedicamentosAnteriores, [paciente.id_paciente, paciente.id_medico, paciente.id_paciente, paciente.id_medico], (errAnteriores, resultAnteriores) => {
+                            if (errAnteriores) {
+                                console.log(errAnteriores);
+                                return res.status(500).send("Error al obtener medicamentos anteriores.");
                             }
 
-                            //septima conexion: select de alergias
-                            conexion.query(consultaSelectAlergia, (errSelectAlergia, resultSelectAlergia) => {
-                                if (errSelectAlergia) {
-                                    console.log(errSelectAlergia);
-                                    return res.status(500).send("Error al obtener datos de alergias para selección.");
+                            medicamentosAnteriores = resultAnteriores;
+
+                            // Quinta consulta: evoluciones
+                            conexion.query(consultaEvoluciones, [paciente.id_paciente, paciente.id_medico], (errEvoluciones, resultEvoluciones) => {
+                                if (errEvoluciones) {
+                                    console.log(errEvoluciones);
+                                    return res.status(500).send("Error al obtener datos de evoluciones.");
                                 }
 
-                                //octava conexion: consultas realizadas por otros medicos 
-                                conexion.query(consultas, [paciente.id_paciente, paciente.id_medico], (errConsultas, resultConsultas) => {
-                                    if (errConsultas) {
-                                        console.log("error al obtener consulta de la BD" + errConsultas);
-                                        return res.status(500).send("ERROR al obtener consultas de la BD");
+                                // Sexta consulta: diagnósticos
+                                conexion.query(consultaDiagnosticos, [paciente.id_paciente, paciente.id_medico], (errDiagnosticos, resultDiagnosticos) => {
+                                    if (errDiagnosticos) {
+                                        console.log(errDiagnosticos);
+                                        return res.status(500).send("Error al obtener datos de diagnósticos.");
                                     }
-                                    console.log("resultConsultas" + resultConsultas);
-                                    //novena conexion: consulta templates
-                                    conexion.query(consultaTemplates, [paciente.id_medico], (errTemplates, resultTemplates) => {
-                                        if (errTemplates) {
-                                            console.log("Error al obtener templates de la BD" + errTemplates);
-                                            return res.status(500).send("Error al obtener templates de la BD ");
-                                        } //  console.log("Datos obtenidos de alergias: " + JSON.stringify(resultSelectAlergia, null, 2));
 
-                                        // Formatear las fechas
-                                        resultAlergias.forEach(alergia => {
-                                            alergia.fecha_desde = formatFecha(alergia.fecha_desde);
-                                            alergia.fecha_hasta = formatFecha(alergia.fecha_hasta);
-                                            alergia.fecha_carga_alergia = formatFecha(alergia.fecha_carga_alergia);
-                                        });
+                                    // Séptima consulta: selección de alergias
+                                    conexion.query(consultaSelectAlergia, (errSelectAlergia, resultSelectAlergia) => {
+                                        if (errSelectAlergia) {
+                                            console.log(errSelectAlergia);
+                                            return res.status(500).send("Error al obtener datos de alergias para selección.");
+                                        }
 
-                                        resultAntecedentes.forEach(antecedente => {
-                                            antecedente.fecha_desde_antecedente = formatFecha(antecedente.fecha_desde_antecedente);
-                                            antecedente.fecha_hasta_antecedente = formatFecha(antecedente.fecha_hasta_antecedente);
-                                            antecedente.fecha_carga_antecedente = formatFecha(antecedente.fecha_carga_antecedente);
-                                        });
+                                        // Octava consulta: consultas de otros médicos
+                                        conexion.query(consultas, [paciente.id_paciente, paciente.id_medico], (errConsultas, resultConsultas) => {
+                                            if (errConsultas) {
+                                                console.log("Error al obtener consulta de la BD: " + errConsultas);
+                                                return res.status(500).send("Error al obtener consultas de la BD");
+                                            }
 
-                                        resultHabitos.forEach(habito => {
-                                            habito.fecha_desde_habito = formatFecha(habito.fecha_desde_habito);
-                                            habito.fecha_hasta_habito = formatFecha(habito.fecha_hasta_habito);
-                                            habito.fecha_carga_habito = formatFecha(habito.fecha_carga_habito);
-                                        });
+                                            // Novena consulta: templates
+                                            conexion.query(consultaTemplates, [paciente.id_medico], (errTemplates, resultTemplates) => {
+                                                if (errTemplates) {
+                                                    console.log("Error al obtener templates de la BD: " + errTemplates);
+                                                    return res.status(500).send("Error al obtener templates de la BD.");
+                                                }
 
-                                        resultMedicamentos.forEach(medicamento => {
-                                            medicamento.fecha_carga_medicamento = formatFecha(medicamento.fecha_carga_medicamento);
-                                        });
+                                                // Formatear las fechas
+                                                resultAlergias.forEach(alergia => {
+                                                    alergia.fecha_desde = formatFecha(alergia.fecha_desde);
+                                                    alergia.fecha_hasta = formatFecha(alergia.fecha_hasta);
+                                                    alergia.fecha_carga_alergia = formatFecha(alergia.fecha_carga_alergia);
+                                                });
 
-                                        resultEvoluciones.forEach(evolucion => {
-                                            evolucion.fecha = formatFecha(evolucion.fecha);
-                                        });
+                                                resultAntecedentes.forEach(antecedente => {
+                                                    antecedente.fecha_desde_antecedente = formatFecha(antecedente.fecha_desde_antecedente);
+                                                    antecedente.fecha_hasta_antecedente = formatFecha(antecedente.fecha_hasta_antecedente);
+                                                    antecedente.fecha_carga_antecedente = formatFecha(antecedente.fecha_carga_antecedente);
+                                                });
 
-                                        resultDiagnosticos.forEach(diagnostico => {
-                                            diagnostico.fecha = formatFecha(diagnostico.fecha);
-                                        });
+                                                resultHabitos.forEach(habito => {
+                                                    habito.fecha_desde_habito = formatFecha(habito.fecha_desde_habito);
+                                                    habito.fecha_hasta_habito = formatFecha(habito.fecha_hasta_habito);
+                                                    habito.fecha_carga_habito = formatFecha(habito.fecha_carga_habito);
+                                                });
 
-                                        resultConsultas.forEach(consulta => {
-                                            consulta.fecha = formatFecha(consulta.fecha);
-                                        });
-                                        // console.log("resultSelectAlergia: " + JSON.stringify(resultSelectAlergia, null, 2));
-                                        // Renderizar la vista con los datos
-                                        // console.log("resultTemplates: " + JSON.stringify(resultTemplates, null, 2));
-                                        res.render('historia_clinica', {
-                                            paciente: paciente, // Pasar los datos del paciente a la vista
-                                            alergias: resultAlergias,
-                                            antecedentes: resultAntecedentes,
-                                            habitos: resultHabitos,
-                                            medicamentos: resultMedicamentos,
-                                            evoluciones: resultEvoluciones,
-                                            diagnosticos: resultDiagnosticos,
-                                            alergiasSelect: resultSelectAlergia,
-                                            consultas: resultConsultas,
-                                            templates: resultTemplates
+                                                resultMedicamentos.forEach(medicamento => {
+                                                    medicamento.fecha_carga_medicamento = formatFecha(medicamento.fecha_carga_medicamento);
+                                                });
 
+                                                resultEvoluciones.forEach(evolucion => {
+                                                    evolucion.fecha = formatFecha(evolucion.fecha);
+                                                });
+
+                                                resultDiagnosticos.forEach(diagnostico => {
+                                                    diagnostico.fecha = formatFecha(diagnostico.fecha);
+                                                });
+
+                                                resultConsultas.forEach(consulta => {
+                                                    consulta.fecha = formatFecha(consulta.fecha);
+                                                });
+
+                                                // Renderizar la vista con los datos
+                                                res.render('historia_clinica', {
+                                                    paciente: paciente,
+                                                    alergias: resultAlergias,
+                                                    antecedentes: resultAntecedentes,
+                                                    habitos: resultHabitos,
+                                                    medicamentos: resultMedicamentos,
+                                                    evoluciones: resultEvoluciones,
+                                                    diagnosticos: resultDiagnosticos,
+                                                    alergiasSelect: resultSelectAlergia,
+                                                    consultas: resultConsultas,
+                                                    templates: resultTemplates,
+                                                    medicamentosUltimaFecha,
+                                                    medicamentosAnteriores
+                                                });
+                                            });
                                         });
                                     });
                                 });
                             });
                         });
-                    });
+                    }
                 });
             });
         });
     });
-});
 
+});
 router.get('/historia_clinica', (req, res) => {
     const alergias = "SELECT * FROM alergia";
 

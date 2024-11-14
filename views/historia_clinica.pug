@@ -120,13 +120,31 @@ ul.habitos
 
 
 h5.medicamentos-title Medicamentos 
-ul.medicamentos 
-  if medicamentos.length > 0
-    each medicamento in medicamentos 
-      li 
-        span.medicamento-info DESCRIPCION: #{medicamento.descripcion},CARGADO EL: #{medicamento.fecha_carga_medicamento}
+ul.medicamentos
+  if medicamentosUltimaFecha && medicamentosUltimaFecha.length > 0
+    li
+      h6 Últimos Medicamentos Cargados
+    each medicamento in medicamentosUltimaFecha
+      li
+        span.medicamento-info DESCRIPCIÓN: #{medicamento.descripcion}, CARGADO EL: #{medicamento.fecha_carga_medicamento}
+        button(type="button") Editar
   else 
+    li  
+      h6 No hay medicamentos cargados recientemente.
+
+  if medicamentosAnteriores && medicamentosAnteriores.length > 0
+    li
+      h6 Medicamentos Anteriores
+    each medicamento in medicamentosAnteriores
+      li
+        span.medicamento-info DESCRIPCIÓN: #{medicamento.descripcion}, CARGADO EL: #{medicamento.fecha_carga_medicamento}
+  else 
+    li  
+      h6 No hay medicamentos anteriores a la última fecha.
+
+  if (!medicamentosUltimaFecha || medicamentosUltimaFecha.length === 0) && (!medicamentosAnteriores || medicamentosAnteriores.length === 0)
     li No hay medicamentos para #{paciente.nombre_paciente}
+
 .form_medicamentos 
   form(action="/agregar_medicamento" method="POST")
     input(type="hidden" name="id_historia_clinica" value=paciente.id_paciente)
@@ -144,7 +162,7 @@ ul.evolucion
       span.evoluciones-info 
         | DESCRIPCION:  
         != evolucion.descripcion_evolucion
-        | , FECHA DE CARGA: #{evolucion.fecha}
+        | FECHA DE CARGA: #{evolucion.fecha}
   else
     li Aun no hay evoluciones cargadas para #{paciente.nombre_paciente}
 

@@ -21,7 +21,8 @@ router.get('/ver_historia_clinica', (req, res) => {
     const consultaMedicamentos = ` SELECT id_medicamento, descripcion,fecha_carga_medicamento    
         FROM s_medicamento 
         JOIN paciente ON s_medicamento.id_historia_clinica = paciente.id_paciente 
-        WHERE paciente.id_paciente  = ? AND s_medicamento.id_medico = ?  ;`;
+        WHERE paciente.id_paciente  = ? AND s_medicamento.id_medico = ?  
+        ORDER BY fecha_carga_medicamento ASC;`;
 
     const consultaEvoluciones = `
             SELECT descripcion_evolucion, agenda_horarios.fecha
