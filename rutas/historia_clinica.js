@@ -366,11 +366,13 @@ router.get('/obtener_template/:id', (req, res) => {
 });
 router.get('/verificar_cierre_consulta/:id_agenda_horarios', async(req, res) => {
     const { id_agenda_horarios } = req.params;
+    const paciente = req.session.paciente;
 
     try {
         const sqlDiagnostico = "SELECT COUNT(*) AS total FROM diagnostico WHERE id_agenda_horarios = ? AND id_estado = 1";
         const sqlEvolucion = "SELECT COUNT(*) AS total FROM evolucion WHERE id_turno = ? AND id_estado = 1";
         const sqlCambioEstadoAgenda = "UPDATE agenda_horarios SET id_estado = 1 WHERE id_agenda_horarios = ?";
+        const agregarConsulta = "INSERT INTO consultas (id_paciente,id_agenda_horarios,id_diagnostico,id_medico) VALUES (?,?,?,?); ";
         conexion.query(sqlDiagnostico, [id_agenda_horarios], (err, resultDiagnostico) => {
             if (err) throw err;
             conexion.query(sqlEvolucion, [id_agenda_horarios], (err, resultEvolucion) => {
@@ -381,7 +383,20 @@ router.get('/verificar_cierre_consulta/:id_agenda_horarios', async(req, res) => 
                     const tieneEvolucion = resultEvolucion[0].total > 0;
                     console.log("tiene diagnostico: " + tieneDiagnostico);
                     console.log("tiene evolucion: " + tieneEvolucion);
-                    res.json({ puedeCerrar: tieneDiagnostico && tieneEvolucion });
+                    if (tieneDiagnostico && tieneEvolucion) {
+                        conexion.query(agregarConsulta, [paciente.id_paciente, id_agenda_horarios, id_diagnostico, paciente.id_medico], async(err, result) => {
+                            if (err) {
+                                console.log("error al cargar la consulta" + err);
+                                return res.status(500).send('Hubo un problema al guardar la evolucion.' + err);
+
+                            }
+
+                            res.json({ puedeCerrar: true });
+                        });
+                    } else {
+                        res.json({ puedeCerrar: false });
+                    }
+
                 });
             });
         });
