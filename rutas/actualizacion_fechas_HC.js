@@ -52,7 +52,6 @@ router.post('/actualizar_antecedente', async(req, res) => {
 router.post('/actualizar_habito', async(req, res) => {
     const { id_historia_clinica, id_habito, fecha_hasta_habito } = req.body;
     //  console.log("Valores recibidos:", fecha_hasta_habito, id_habito, id_historia_clinica);
-    // Si id_habito es un arreglo, toma el primer valor
     let idHabito = id_habito;
     console.log("id del habito: ", idHabito);
 
@@ -76,4 +75,29 @@ router.post('/actualizar_habito', async(req, res) => {
     }
 });
 
+router.post('/actualizar_medicamento', async(req, res) => {
+    const { id_historia_clinica, id_medicamento, descripcion } = req.body;
+    console.log("Valores recibidos:[id_historia_clinica],[id_medicamento],[descripcion]",
+        id_historia_clinica, id_medicamento, descripcion);
+    if (!descripcion) {
+
+        return res.status(200).send('falta la descripcion del medicamento');
+
+    } else {
+        try {
+            const actualizarMedicamento = "UPDATE s_medicamento SET descripcion = ?, fecha_carga_medicamento = CURRENT_DATE WHERE id_medicamento = ? AND id_historia_clinica = ? "
+            conexion.query(actualizarMedicamento, [descripcion, id_medicamento, id_historia_clinica], (err, result) => {
+                if (err) {
+                    console.log("error al actualizar el medicamento" + err);
+                    return res.status(500).send("error al actualizar el medicamento " + err);
+                }
+                console.log("se actualizo correctamente el medicamento" + result);
+                res.redirect('/historia_clinica');
+            });
+        } catch (err) {
+            console.log("Error en la inserción del MEDICAMENTO: " + err);
+            res.status(500).send('Hubo un problema en la actualizacion del medicamento.' + err);
+        }
+    }
+});
 module.exports = router;

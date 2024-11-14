@@ -3,7 +3,7 @@ function habilitarEdicionAlergia(idAlergia) {
     const actualizarBtn = document.getElementById("actualizar_alergia");
     actualizarBtn.disabled = false;
 
-    // Establecer el id de alergia en el campo oculto del formulario
+    //  id de alergia en el campo oculto del formulario
     document.getElementById("id_alergia").value = idAlergia;
 
     // Deshabilitar los campos que no deben ser editados
@@ -22,17 +22,13 @@ function habilitarEdicionAlergia(idAlergia) {
 }
 // Espera a que el documento esté listo
 document.addEventListener("DOMContentLoaded", function() {
-    // Selecciona el elemento select por su id
     const selectAlergia = document.getElementById("nombre_alergia");
 
     // Agrega un evento para cuando cambia la selección
     selectAlergia.addEventListener("change", function() {
-        // Obtiene el id de la alergia seleccionada
         const idAlergia = selectAlergia.value;
-        // Obtiene el nombre de la alergia seleccionada
         const nombreAlergia = selectAlergia.options[selectAlergia.selectedIndex].text;
 
-        // Muestra el resultado en la consola
         console.log("ID de Alergia seleccionada:", idAlergia);
         console.log("Nombre de Alergia seleccionada:", nombreAlergia);
     });
@@ -86,6 +82,26 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+function habilitarEdicionMedicamento(idMedicamento) {
+    const actualizarBtn = document.getElementById("actualizar_medicamento");
+    actualizarBtn.disabled = false;
+
+    // pongo ID del medicamento en el campo oculto del formulario
+    document.getElementById("id_medicamento").value = idMedicamento;
+
+    // deshabilito btn guardar
+    document.getElementById("guardar_medicamento").disabled = true;
+
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('actualizar_medicamento').addEventListener('click', function() {
+
+        const form = document.getElementById('formMedicamento');
+        form.action = '/actualizar_medicamento';
+        form.submit(); // Enviar el formulario
+    });
+});
 
 
 function habilitarEdicionHabito(idHabito) {

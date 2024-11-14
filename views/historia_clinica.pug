@@ -123,36 +123,39 @@ h5.medicamentos-title Medicamentos
 ul.medicamentos
   if medicamentosUltimaFecha && medicamentosUltimaFecha.length > 0
     li
-      h6 Últimos Medicamentos Cargados
+      h4 Últimos Medicamentos Cargados
     each medicamento in medicamentosUltimaFecha
       li
         span.medicamento-info DESCRIPCIÓN: #{medicamento.descripcion}, CARGADO EL: #{medicamento.fecha_carga_medicamento}
-        button(type="button") Editar
+          button(type="button", onclick=`habilitarEdicionMedicamento(${medicamento.id_medicamento})`).btn-editar Editar el medicamento con id: #{medicamento.id_medicamento}
+
   else 
     li  
-      h6 No hay medicamentos cargados recientemente.
+      h4 No hay medicamentos cargados recientemente.
 
   if medicamentosAnteriores && medicamentosAnteriores.length > 0
     li
-      h6 Medicamentos Anteriores
+      h4 Medicamentos Anteriores
     each medicamento in medicamentosAnteriores
       li
         span.medicamento-info DESCRIPCIÓN: #{medicamento.descripcion}, CARGADO EL: #{medicamento.fecha_carga_medicamento}
   else 
     li  
-      h6 No hay medicamentos anteriores a la última fecha.
+      h4 No hay medicamentos anteriores a la última fecha.
 
   if (!medicamentosUltimaFecha || medicamentosUltimaFecha.length === 0) && (!medicamentosAnteriores || medicamentosAnteriores.length === 0)
     li No hay medicamentos para #{paciente.nombre_paciente}
 
 .form_medicamentos 
-  form(action="/agregar_medicamento" method="POST")
+  form(id="formMedicamento" action="/agregar_medicamento" method="POST")
     input(type="hidden" name="id_historia_clinica" value=paciente.id_paciente)
     input(type="hidden" id="id_medico" name="id_medico" value=paciente.id_medico)
+    input(type="hidden" id="id_medicamento" name="id_medicamento" value="")
     label(for="descripcion") Descripcion:
-    input#habito(type="text", name="descripcion" required)
+    input#medicamento(type="text", name="descripcion" required)
     br
-    button(type="submit") Guardar Medicamento
+    button(type="submit" id="guardar_medicamento") Guardar Medicamento
+    button(type="submit" id="actualizar_medicamento" disabled) Actualizar Medicamento
 
 h5.evolucion-title Evoluciones
 ul.evolucion 
